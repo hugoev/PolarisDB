@@ -9,7 +9,8 @@ members = [
 version = "0.1.0"
 edition = "2021"
 license = "MIT OR Apache-2.0"
-repository = "https://github.com/yourusername/polarisdb"
+repository = "https://github.com/hugoev/PolarisDB"
+documentation = "https://docs.rs/polarisdb"
 keywords = ["vector", "database", "embedding", "ai", "rag"]
 categories = ["database", "data-structures", "science"]
 
