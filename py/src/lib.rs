@@ -55,6 +55,42 @@ impl Index {
         let results = self.inner.search(&query, k, None);
         Ok(results.into_iter().map(|r| (r.id, r.distance)).collect())
     }
+
+    /// Insert multiple vectors at once.
+    ///
+    /// Args:
+    ///     ids (list[int]): List of unique identifiers.
+    ///     vectors (list[list[float]]): List of vectors.
+    fn insert_batch(&mut self, ids: Vec<u64>, vectors: Vec<Vec<f32>>) -> PyResult<()> {
+        if ids.len() != vectors.len() {
+            return Err(pyo3::exceptions::PyValueError::new_err(
+                "ids and vectors must have the same length"
+            ));
+        }
+        for (id, vector) in ids.into_iter().zip(vectors) {
+            self.inner
+                .insert(id, vector, Payload::new())
+                .map_err(|e| pyo3::exceptions::PyValueError::new_err(e.to_string()))?;
+        }
+        Ok(())
+    }
+
+    /// Search for nearest neighbors for multiple queries.
+    ///
+    /// Args:
+    ///     queries (list[list[float]]): List of query vectors.
+    ///     k (int): Number of neighbors per query.
+    ///
+    /// Returns:
+    ///     list[list[tuple[int, float]]]: Results for each query.
+    fn search_batch(&self, queries: Vec<Vec<f32>>, k: usize) -> PyResult<Vec<Vec<(u64, f32)>>> {
+        let mut all_results = Vec::with_capacity(queries.len());
+        for query in queries {
+            let results = self.inner.search(&query, k, None);
+            all_results.push(results.into_iter().map(|r| (r.id, r.distance)).collect());
+        }
+        Ok(all_results)
+    }
 }
 
 #[pyclass]
@@ -119,6 +155,42 @@ impl Collection {
         self.inner
             .flush()
             .map_err(|e| pyo3::exceptions::PyIOError::new_err(e.to_string()))
+    }
+
+    /// Insert multiple vectors at once.
+    ///
+    /// Args:
+    ///     ids (list[int]): List of unique identifiers.
+    ///     vectors (list[list[float]]): List of vectors.
+    fn insert_batch(&mut self, ids: Vec<u64>, vectors: Vec<Vec<f32>>) -> PyResult<()> {
+        if ids.len() != vectors.len() {
+            return Err(pyo3::exceptions::PyValueError::new_err(
+                "ids and vectors must have the same length"
+            ));
+        }
+        for (id, vector) in ids.into_iter().zip(vectors) {
+            self.inner
+                .insert(id, vector, Payload::new())
+                .map_err(|e| pyo3::exceptions::PyValueError::new_err(e.to_string()))?;
+        }
+        Ok(())
+    }
+
+    /// Search for nearest neighbors for multiple queries.
+    ///
+    /// Args:
+    ///     queries (list[list[float]]): List of query vectors.
+    ///     k (int): Number of neighbors per query.
+    ///
+    /// Returns:
+    ///     list[list[tuple[int, float]]]: Results for each query.
+    fn search_batch(&self, queries: Vec<Vec<f32>>, k: usize) -> PyResult<Vec<Vec<(u64, f32)>>> {
+        let mut all_results = Vec::with_capacity(queries.len());
+        for query in queries {
+            let results = self.inner.search(&query, k, None);
+            all_results.push(results.into_iter().map(|r| (r.id, r.distance)).collect());
+        }
+        Ok(all_results)
     }
 }
 
