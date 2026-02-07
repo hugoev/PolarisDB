@@ -237,25 +237,32 @@ cargo run --release --example ollama_rag
 
 ## Performance
 
-Benchmarked on M1 MacBook Pro with 10,000 128-dimensional vectors:
+Benchmarked on M1 MacBook Pro with 128-dimensional vectors (Cosine distance):
 
-| Operation | BruteForce | HNSW | Speedup |
-|-----------|------------|------|---------|
-| Search (k=10) | 2.8 ms | **299 µs** | **9.4x** |
-| Insert (batch) | 15 ms | 45 ms | - |
-| Memory | ~5 MB | ~12 MB | - |
+| Operation | Vectors | Time | Throughput |
+|-----------|---------|------|------------|
+| **Brute Force Search** | 1,000 | 325 µs | 3.1M elem/s |
+| **Brute Force Search** | 10,000 | 5.5 ms | 1.8M elem/s |
+| **Brute Force Search** | 50,000 | 34 ms | 1.5M elem/s |
 
-**HNSW Recall**: 99%+ at default settings
+### Distance Calculations (SIMD-optimized)
 
-### Scaling
+| Dimension | Dot Product | Throughput |
+|-----------|-------------|------------|
+| 128 | 81 ns | 1.6 Gelem/s |
+| 384 | 155 ns | 2.5 Gelem/s |
+| 768 | 154 ns | 5.0 Gelem/s |
+| 1536 | 304 ns | 5.1 Gelem/s |
+
+### Scaling Projections
 
 | Vectors | HNSW Search Time | Memory |
 |---------|------------------|--------|
-| 10K | 299 µs | 12 MB |
-| 100K | ~400 µs | 120 MB |
-| 1M | ~500 µs | 1.2 GB |
+| 10K | ~500 µs | 12 MB |
+| 100K | ~600 µs | 120 MB |
+| 1M | ~800 µs | 1.2 GB |
 
-*Search time scales logarithmically with dataset size.*
+*HNSW search time scales logarithmically. Brute force scales linearly.*
 
 ## Documentation
 
