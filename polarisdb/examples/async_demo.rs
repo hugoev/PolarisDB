@@ -9,7 +9,7 @@ use polarisdb::AsyncCollection;
 #[cfg(feature = "async")]
 #[tokio::main]
 async fn main() {
-    println!("🚀 Async PolarisDB Demo\n");
+    println!("Async PolarisDB Demo\n");
 
     // Create temp directory
     let temp_dir = std::env::temp_dir().join("polarisdb_async_demo");
@@ -21,7 +21,7 @@ async fn main() {
         .await
         .expect("Failed to create collection");
 
-    println!("📦 Created async collection\n");
+    println!("Created async collection\n");
 
     // Insert vectors concurrently
     println!("⏳ Inserting 1000 vectors concurrently...");
@@ -45,11 +45,11 @@ async fn main() {
         handle.await.unwrap().unwrap();
     }
 
-    println!("   ✅ Inserted in {:?}", start.elapsed());
+    println!("   [OK] Inserted in {:?}", start.elapsed());
     println!("   Total vectors: {}\n", collection.len());
 
     // Search asynchronously
-    println!("🔍 Searching...");
+    println!("Searching...");
     let query: Vec<f32> = (0..128).map(|i| (i as f32 * 0.1).cos()).collect();
     let results = collection.search(&query, 5, None).await;
 
@@ -62,7 +62,7 @@ async fn main() {
     collection.flush().await.unwrap();
     let _ = std::fs::remove_dir_all(&temp_dir);
 
-    println!("\n✨ Async demo complete!");
+    println!("\nAsync demo complete!");
 }
 
 #[cfg(not(feature = "async"))]

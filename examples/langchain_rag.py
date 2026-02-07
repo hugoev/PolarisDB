@@ -49,7 +49,7 @@ def main():
         "PolarisDB is designed for local AI workloads without external dependencies.",
     ]
 
-    print("🚀 Initializing PolarisDB + LangChain RAG pipeline...\n")
+    print("Initializing PolarisDB + LangChain RAG pipeline...\n")
 
     # Initialize embedding model
     embeddings = OpenAIEmbeddings(model="text-embedding-3-small")
@@ -62,7 +62,7 @@ def main():
         metric="cosine",
     )
 
-    print(f"✅ Indexed {len(documents)} documents\n")
+    print(f"[OK] Indexed {len(documents)} documents\n")
 
     # Create retriever
     retriever = vectorstore.as_retriever(search_kwargs={"k": 3})
@@ -96,16 +96,16 @@ Answer:""")
     ]
 
     print("=" * 60)
-    print("📝 Running RAG queries...")
+    print("Running RAG queries...")
     print("=" * 60)
 
     for query in queries:
-        print(f"\n❓ Question: {query}")
+        print(f"\nQuestion: {query}")
         answer = rag_chain.invoke(query)
-        print(f"💡 Answer: {answer}")
+        print(f"Answer: {answer}")
 
     print("\n" + "=" * 60)
-    print("✅ RAG demo complete!")
+    print("[OK] RAG demo complete!")
     print("=" * 60)
 
 

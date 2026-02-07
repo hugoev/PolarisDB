@@ -56,10 +56,10 @@ fn main() -> Result<()> {
             collection.insert(*id, embedding.to_vec(), payload)?;
         }
 
-        println!("   ✅ Inserted {} vectors", collection.len());
-        println!("   💾 Flushing to disk...");
+        println!("   [OK] Inserted {} vectors", collection.len());
+        println!("   Flushing to disk...");
         collection.flush()?;
-        println!("   ✅ Collection flushed\n");
+        println!("   [OK] Collection flushed\n");
 
         // Collection is dropped here, simulating app shutdown
     }
@@ -71,7 +71,7 @@ fn main() -> Result<()> {
         let collection = Collection::open_or_create(collection_path, config)?;
 
         println!(
-            "   ✅ Collection reopened with {} vectors\n",
+            "   [OK] Collection reopened with {} vectors\n",
             collection.len()
         );
 
@@ -86,7 +86,7 @@ fn main() -> Result<()> {
         println!();
 
         // Search still works
-        println!("🔍 Searching for 'Rust programming'...");
+        println!("Searching for 'Rust programming'...");
         let query = [0.88, 0.85, 0.12, 0.03, 0.12, 0.02, 0.22, 0.12];
         let results = collection.search(&query, 3, None);
 
@@ -117,7 +117,7 @@ fn main() -> Result<()> {
             Payload::new().with_field("title", "New document (no flush)"),
         )?;
 
-        println!("   ✅ Inserted ID 6 WITHOUT calling flush()");
+        println!("   [OK] Inserted ID 6 WITHOUT calling flush()");
         println!("   📝 Simulating crash (dropping collection)...\n");
         // No flush! Simulates crash
     }
@@ -129,20 +129,20 @@ fn main() -> Result<()> {
         let collection = Collection::open_or_create(collection_path, config)?;
 
         println!(
-            "   ✅ Collection recovered with {} vectors",
+            "   [OK] Collection recovered with {} vectors",
             collection.len()
         );
 
         if collection.get(6).is_some() {
-            println!("   ✅ ID 6 recovered from WAL!");
+            println!("   [OK] ID 6 recovered from WAL!");
         } else {
-            println!("   ❌ ID 6 not found (WAL recovery failed)");
+            println!("   [FAIL] ID 6 not found (WAL recovery failed)");
         }
     }
 
     // Cleanup
     let _ = fs::remove_dir_all(collection_path);
 
-    println!("\n✨ Demo complete! PolarisDB persistence is working correctly.");
+    println!("\nDemo complete! PolarisDB persistence is working correctly.");
     Ok(())
 }

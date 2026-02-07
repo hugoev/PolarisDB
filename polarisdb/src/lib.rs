@@ -4,10 +4,10 @@
 //!
 //! PolarisDB provides fast, in-process vector similarity search optimized for:
 //!
-//! - 🤖 **RAG applications** — Semantic retrieval for LLM context
-//! - 🔍 **Semantic search** — Find similar documents, images, or audio
-//! - 💡 **Recommendations** — Content-based filtering with embeddings
-//! - 📱 **Edge AI** — Local inference without cloud dependencies
+//! - **RAG applications** — Semantic retrieval for LLM context
+//! - **Semantic search** — Find similar documents, images, or audio
+//! - **Recommendations** — Content-based filtering with embeddings
+//! - **Edge AI** — Local inference without cloud dependencies
 //!
 //! ## Features
 //!

@@ -48,11 +48,11 @@ fn main() -> Result<()> {
             .with_field("id", *id as i64);
         index.insert(*id, embedding.to_vec(), payload)?;
     }
-    println!("✅ Index contains {} vectors\n", index.len());
+    println!("[OK] Index contains {} vectors\n", index.len());
 
     // Search for documents similar to "Rust programming"
     let query = [0.88, 0.85, 0.12, 0.03, 0.12, 0.02, 0.22, 0.12];
-    println!("🔍 Searching for documents similar to 'Rust programming'...\n");
+    println!("Searching for documents similar to 'Rust programming'...\n");
 
     let results = index.search(query, 3, None);
 
@@ -75,7 +75,7 @@ fn main() -> Result<()> {
     println!("{:-<60}\n", "");
 
     // Demonstrate filtered search
-    println!("🔍 Searching with filter (title contains 'Rust')...\n");
+    println!("Searching with filter (title contains 'Rust')...\n");
     let filter = Filter::field("title").contains("Rust");
     let filtered_results = index.search(query, 10, Some(filter));
 
@@ -94,6 +94,6 @@ fn main() -> Result<()> {
     }
     println!("{:-<60}\n", "");
 
-    println!("✨ Done! PolarisDB is working correctly.");
+    println!("Done! PolarisDB is working correctly.");
     Ok(())
 }

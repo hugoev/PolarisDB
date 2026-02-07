@@ -92,7 +92,7 @@ fn main() -> Result<()> {
         match get_embedding(text) {
             Ok(embedding) => {
                 if embedding.len() != EMBED_DIM {
-                    println!("❌ Wrong dimension: {}", embedding.len());
+                    println!("[FAIL] Wrong dimension: {}", embedding.len());
                     continue;
                 }
                 let payload = Payload::new()
@@ -102,15 +102,15 @@ fn main() -> Result<()> {
                 println!("✅");
             }
             Err(e) => {
-                println!("❌ Error: {}", e);
-                println!("\n⚠️  Make sure Ollama is running: ollama serve");
-                println!("⚠️  And the model is pulled: ollama pull {}", EMBED_MODEL);
+                println!("[FAIL] Error: {}", e);
+                println!("\n[WARN] Make sure Ollama is running: ollama serve");
+                println!("[WARN] And the model is pulled: ollama pull {}", EMBED_MODEL);
                 return Ok(());
             }
         }
     }
 
-    println!("\n🔍 Semantic Search Demo\n");
+    println!("\nSemantic Search Demo\n");
 
     // Example queries
     let queries = vec![
@@ -147,6 +147,6 @@ fn main() -> Result<()> {
         }
     }
 
-    println!("✨ RAG demo complete!");
+    println!("RAG demo complete!");
     Ok(())
 }

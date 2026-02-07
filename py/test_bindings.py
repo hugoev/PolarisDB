@@ -6,7 +6,7 @@ def test_rust_bindings():
 
     # Initialize index
     index = polarisdb.Index("cosine", 3)
-    print("✅ Index initialized")
+    print("[OK] Index initialized")
 
     # Insert vectors
     vectors = [
@@ -19,13 +19,13 @@ def test_rust_bindings():
     start = time.time()
     for id, vector in vectors:
         index.insert(id, vector)
-    print(f"✅ Inserted {len(vectors)} vectors in {(time.time() - start)*1000:.2f}ms")
+    print(f"[OK] Inserted {len(vectors)} vectors in {(time.time() - start)*1000:.2f}ms")
 
     # Search
     query = [1.0, 0.1, 0.0]
     results = index.search(query, 2)
     
-    print(f"✅ Search results for {query}:")
+    print(f"[OK] Search results for {query}:")
     for id, dist in results:
         print(f"   ID: {id}, Distance: {dist:.4f}")
 
@@ -40,18 +40,18 @@ def test_rust_bindings():
     col = polarisdb.Collection.open_or_create("./py_test_col", 3, "cosine")
     col.insert(1, [1.0, 0.0, 0.0])
     col.flush()
-    print("✅ Collection created and flushed")
+    print("[OK] Collection created and flushed")
     
     col2 = polarisdb.Collection.open_or_create("./py_test_col", 3, "cosine")
     res = col2.search([1.0, 0.0, 0.0], 1)
     assert len(res) == 1
     assert res[0][0] == 1
-    print("✅ Persistence verified")
+    print("[OK] Persistence verified")
     
     if os.path.exists("./py_test_col"):
         shutil.rmtree("./py_test_col")
 
-    print("✨ All checks passed!")
+    print("All checks passed!")
 
 if __name__ == "__main__":
     test_rust_bindings()

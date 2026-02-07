@@ -7,7 +7,7 @@ use polarisdb::prelude::*;
 use std::time::Instant;
 
 fn main() {
-    println!("🚀 HNSW Performance Demo\n");
+    println!("HNSW Performance Demo\n");
 
     // Parameters
     let num_vectors = 10_000;
@@ -40,7 +40,7 @@ fn main() {
             .unwrap();
     }
     let bf_build_time = start.elapsed();
-    println!("   ✅ Built in {:?}", bf_build_time);
+    println!("   [OK] Built in {:?}", bf_build_time);
 
     // Build HNSW index
     println!("🔨 Building HNSW index...");
@@ -58,25 +58,25 @@ fn main() {
             .unwrap();
     }
     let hnsw_build_time = start.elapsed();
-    println!("   ✅ Built in {:?}", hnsw_build_time);
+    println!("   [OK] Built in {:?}", hnsw_build_time);
     println!();
 
     // Query
     let query: Vec<f32> = (0..dimension).map(|j| (j as f32 * 0.15).cos()).collect();
 
     // Brute-force search
-    println!("🔍 Brute-force search (exact k={})...", k);
+    println!("Brute-force search (exact k={})...", k);
     let start = Instant::now();
     let bf_results = bf_index.search(&query, k, None);
     let bf_search_time = start.elapsed();
-    println!("   ⏱️  Time: {:?}", bf_search_time);
+    println!("   Time: {:?}", bf_search_time);
 
     // HNSW search
-    println!("🔍 HNSW search (approximate k={})...", k);
+    println!("HNSW search (approximate k={})...", k);
     let start = Instant::now();
     let hnsw_results = hnsw_index.search(&query, k, Some(200), None);
     let hnsw_search_time = start.elapsed();
-    println!("   ⏱️  Time: {:?}", hnsw_search_time);
+    println!("   Time: {:?}", hnsw_search_time);
     println!();
 
     // Calculate recall
@@ -95,5 +95,5 @@ fn main() {
     println!("   Recall@{}:   {:.0}%", k, recall * 100.0);
     println!();
 
-    println!("✨ HNSW provides fast approximate search with high recall!");
+    println!("HNSW provides fast approximate search with high recall!");
 }

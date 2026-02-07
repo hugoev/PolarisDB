@@ -7,7 +7,7 @@ use polarisdb::prelude::*;
 use std::time::Instant;
 
 fn main() {
-    println!("🔍 Pre-filter vs Post-filter Benchmark\n");
+    println!("Pre-filter vs Post-filter Benchmark\n");
 
     // Parameters
     let num_vectors = 10_000;
@@ -46,7 +46,7 @@ fn main() {
         hnsw.insert(i as u64, v, payload.clone()).unwrap();
         bitmap.insert(i as u64, &payload);
     }
-    println!("   ✅ Index built\n");
+    println!("   [OK] Index built\n");
 
     // Query
     let query: Vec<f32> = (0..dimension).map(|j| (j as f32 * 0.1).cos()).collect();
@@ -57,7 +57,7 @@ fn main() {
     let _ = hnsw.search_with_bitmap(&query, k, Some(100), &bitmap.query(&filter));
 
     // Post-filter search (evaluate filter on each candidate)
-    println!("🔍 Post-filter search...");
+    println!("Post-filter search...");
     let start = Instant::now();
     let iterations = 100;
     for _ in 0..iterations {
@@ -66,7 +66,7 @@ fn main() {
     let post_filter_time = start.elapsed() / iterations;
 
     // Pre-filter search (use bitmap to filter first)
-    println!("🔍 Pre-filter search...");
+    println!("Pre-filter search...");
     let start = Instant::now();
     let valid_ids = bitmap.query(&filter); // This is fast - O(1) set operations
     for _ in 0..iterations {
@@ -97,5 +97,5 @@ fn main() {
     );
     println!();
 
-    println!("✨ Pre-filtering with BitmapIndex enables efficient metadata queries!");
+    println!("Pre-filtering with BitmapIndex enables efficient metadata queries!");
 }
