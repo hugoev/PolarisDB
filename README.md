@@ -44,20 +44,36 @@
 
 PolarisDB is built for developers who need **fast, local vector search** without the complexity of external services.
 
-| Feature | PolarisDB | Cloud Solutions |
-|---------|-----------|-----------------|
-| **Runs locally** | Yes | No (requires internet) |
-| **Data privacy** | Your machine | Third-party servers |
-| **Zero latency** | In-process | Network overhead |
-| **Cost** | Free | Pay per query |
-| **Pure Rust** | No FFI | Often C++ bindings |
+<table>
+<tr>
+<td width="50%">
 
-**Use cases:**
-- RAG applications with LLMs
-- Semantic search engines
-- Recommendation systems
-- Mobile and edge AI
-- Game AI with embeddings
+**PolarisDB**
+| | |
+|---|---|
+| Runs **100% locally** | ![yes](https://img.shields.io/badge/-✓-brightgreen) |
+| Data **never leaves** your machine | ![yes](https://img.shields.io/badge/-✓-brightgreen) |
+| **Zero network latency** | ![yes](https://img.shields.io/badge/-✓-brightgreen) |
+| **Free forever** — no usage fees | ![yes](https://img.shields.io/badge/-✓-brightgreen) |
+| **Pure Rust** — no C++ deps | ![yes](https://img.shields.io/badge/-✓-brightgreen) |
+
+</td>
+<td width="50%">
+
+**Cloud Vector DBs**
+| | |
+|---|---|
+| Requires internet connection | ![no](https://img.shields.io/badge/-✗-red) |
+| Data on third-party servers | ![no](https://img.shields.io/badge/-✗-red) |
+| Network round-trip latency | ![no](https://img.shields.io/badge/-✗-red) |
+| Pay-per-query pricing | ![no](https://img.shields.io/badge/-✗-red) |
+| Often wrapped C++ libraries | ![no](https://img.shields.io/badge/-✗-red) |
+
+</td>
+</tr>
+</table>
+
+**Built for:** RAG applications · Semantic search · Recommendations · Edge AI · Game AI
 
 ## Features
 
@@ -327,13 +343,13 @@ polarisdb/
 | Feature | PolarisDB | LanceDB | Chroma | Qdrant |
 |---------|-----------|---------|--------|--------|
 | Language | Rust | Rust/Python | Python | Rust |
-| Embedded | ✓ | ✓ | Partial | ✗ |
-| Python Bindings | ✓ PyPI | ✓ | ✓ Native | ✓ |
-| HNSW | ✓ | ✓ | ✓ | ✓ |
-| Persistence | ✓ WAL | ✓ Lance | ✓ SQLite | ✓ Raft |
-| Filtering | ✓ Bitmap | ✓ | ✓ | ✓ |
-| Async | ✓ | ✓ | ✗ | ✓ |
-| SIMD | ✓ | ✓ | ✗ | ✓ |
+| Embedded | ![yes](https://img.shields.io/badge/-✓-brightgreen) | ![yes](https://img.shields.io/badge/-✓-brightgreen) | Partial | ![no](https://img.shields.io/badge/-✗-lightgrey) |
+| Python Bindings | ![yes](https://img.shields.io/badge/-✓-brightgreen) PyPI | ![yes](https://img.shields.io/badge/-✓-brightgreen) | ![yes](https://img.shields.io/badge/-✓-brightgreen) Native | ![yes](https://img.shields.io/badge/-✓-brightgreen) |
+| HNSW | ![yes](https://img.shields.io/badge/-✓-brightgreen) | ![yes](https://img.shields.io/badge/-✓-brightgreen) | ![yes](https://img.shields.io/badge/-✓-brightgreen) | ![yes](https://img.shields.io/badge/-✓-brightgreen) |
+| Persistence | ![yes](https://img.shields.io/badge/-✓-brightgreen) WAL | ![yes](https://img.shields.io/badge/-✓-brightgreen) Lance | ![yes](https://img.shields.io/badge/-✓-brightgreen) SQLite | ![yes](https://img.shields.io/badge/-✓-brightgreen) Raft |
+| Filtering | ![yes](https://img.shields.io/badge/-✓-brightgreen) Bitmap | ![yes](https://img.shields.io/badge/-✓-brightgreen) | ![yes](https://img.shields.io/badge/-✓-brightgreen) | ![yes](https://img.shields.io/badge/-✓-brightgreen) |
+| Async | ![yes](https://img.shields.io/badge/-✓-brightgreen) | ![yes](https://img.shields.io/badge/-✓-brightgreen) | ![no](https://img.shields.io/badge/-✗-lightgrey) | ![yes](https://img.shields.io/badge/-✓-brightgreen) |
+| SIMD | ![yes](https://img.shields.io/badge/-✓-brightgreen) | ![yes](https://img.shields.io/badge/-✓-brightgreen) | ![no](https://img.shields.io/badge/-✗-lightgrey) | ![yes](https://img.shields.io/badge/-✓-brightgreen) |
 
 ## Contributing
 
