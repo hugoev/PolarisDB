@@ -70,7 +70,7 @@ impl DistanceMetric {
 
 /// Computes Euclidean (L2) distance between two vectors.
 ///
-/// Formula: sqrt(sum((a[i] - b[i])^2))
+/// Formula: sqrt(sum((a\[i\] - b\[i\])^2))
 #[inline]
 pub fn euclidean_distance(a: &[f32], b: &[f32]) -> f32 {
     euclidean_distance_squared(a, b).sqrt()
@@ -146,7 +146,7 @@ pub fn cosine_distance(a: &[f32], b: &[f32]) -> f32 {
 
 /// Computes dot product (inner product) between two vectors.
 ///
-/// Formula: sum(a[i] * b[i])
+/// Formula: sum(a\[i\] * b\[i\])
 #[inline]
 pub fn dot_product(a: &[f32], b: &[f32]) -> f32 {
     let mut sum = 0.0;

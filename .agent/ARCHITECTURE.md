@@ -6,6 +6,9 @@ PolarisDB follows a layered architecture:
 
 ```
 ┌─────────────────────────────────────────────────────┐
+│                   Bindings & API                    │
+│      Python (pyo3)     │     HTTP API (axum)        │
+├─────────────────────────────────────────────────────┤
 │                   User API Layer                     │
 │  Collection, AsyncCollection, BruteForceIndex, etc. │
 ├─────────────────────────────────────────────────────┤
@@ -244,3 +247,18 @@ pub enum Error {
 - `Collection` uses `RwLock` for read-heavy workloads
 - Indexes are single-threaded (wrap in mutex if sharing)
 - Async uses thread pool for blocking I/O
+
+
+## Bindings & API
+
+### Python Bindings (`py/`)
+- **Technology**: `pyo3` + `maturin`
+- **Pattern**: `polarisdb` Python wrapper package around `_polarisdb` Rust extension module
+- **Structure**: `py/python/polarisdb` (wrapper) imports from `src/lib.rs` (extension)
+- **Memory**: Vectors passed as `numpy` arrays or lists are converted to `Vec<f32>`
+
+### HTTP Server (`polarisdb-server/`)
+- **Technology**: `axum` (web framework) + `tokio`
+- **State**: Shared `Arc<RwLock<HashMap<String, AsyncCollection>>>`
+- **Endpoints**: JSON-based REST API
+

@@ -39,10 +39,10 @@ polarisdb/
 │   ├── src/lib.rs
 │   └── examples/            # Usage examples
 │       ├── hnsw_demo.rs
-│       ├── async_demo.rs
-│       ├── prefilter_demo.rs
-│       └── ollama_rag.rs
+│       ├── ...
 │
+├── polarisdb-server/        # HTTP API server
+├── py/                      # Python bindings
 └── .agent/                  # AI agent documentation (you are here)
 ```
 
@@ -125,6 +125,14 @@ cargo run --release --example async_demo --features async
 
 # Benchmarks
 cargo bench
+
+# Python Bindings
+cd py && maturin develop
+python3 test_bindings.py
+
+# Server
+cargo run -p polarisdb-server
+./verify_server.sh
 ```
 
 ## Code Style

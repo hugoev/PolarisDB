@@ -54,7 +54,7 @@ fn main() -> Result<()> {
     let query = [0.88, 0.85, 0.12, 0.03, 0.12, 0.02, 0.22, 0.12];
     println!("🔍 Searching for documents similar to 'Rust programming'...\n");
 
-    let results = index.search(&query, 3, None);
+    let results = index.search(query, 3, None);
 
     println!("📊 Top 3 Results:");
     println!("{:-<60}", "");
@@ -77,7 +77,7 @@ fn main() -> Result<()> {
     // Demonstrate filtered search
     println!("🔍 Searching with filter (title contains 'Rust')...\n");
     let filter = Filter::field("title").contains("Rust");
-    let filtered_results = index.search(&query, 10, Some(filter));
+    let filtered_results = index.search(query, 10, Some(filter));
 
     println!("📊 Filtered Results:");
     println!("{:-<60}", "");

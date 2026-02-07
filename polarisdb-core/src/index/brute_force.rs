@@ -449,7 +449,7 @@ mod tests {
         let index = create_test_index();
 
         // Search for exact match
-        let results = index.search(&[1.0, 0.0, 0.0], 3, None);
+        let results = index.search([1.0, 0.0, 0.0], 3, None);
         assert_eq!(results.len(), 3);
         assert_eq!(results[0].id, 1);
         assert!(results[0].distance < f32::EPSILON);
@@ -459,7 +459,7 @@ mod tests {
     fn test_search_k_limit() {
         let index = create_test_index();
 
-        let results = index.search(&[1.0, 0.0, 0.0], 1, None);
+        let results = index.search([1.0, 0.0, 0.0], 1, None);
         assert_eq!(results.len(), 1);
         assert_eq!(results[0].id, 1);
     }
@@ -469,7 +469,7 @@ mod tests {
         let index = create_test_index();
 
         let filter = Filter::field("type").eq("a");
-        let results = index.search(&[0.5, 0.5, 0.5], 10, Some(filter));
+        let results = index.search([0.5, 0.5, 0.5], 10, Some(filter));
 
         assert_eq!(results.len(), 2);
         for result in &results {
@@ -480,7 +480,7 @@ mod tests {
     #[test]
     fn test_search_empty_index() {
         let index = BruteForceIndex::new(DistanceMetric::Euclidean, 3);
-        let results = index.search(&[1.0, 0.0, 0.0], 10, None);
+        let results = index.search([1.0, 0.0, 0.0], 10, None);
         assert!(results.is_empty());
     }
 
@@ -504,7 +504,7 @@ mod tests {
             .unwrap(); // Same direction
 
         // Both should have distance ~0 from query (same direction)
-        let results = index.search(&[0.5, 0.0, 0.0], 2, None);
+        let results = index.search([0.5, 0.0, 0.0], 2, None);
         assert!(results[0].distance < 1e-5);
         assert!(results[1].distance < 1e-5);
     }

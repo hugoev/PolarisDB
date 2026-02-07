@@ -59,7 +59,7 @@ fn main() -> Result<()> {
     println!("🦙 Ollama RAG Example with PolarisDB\n");
 
     // Sample documents
-    let documents = vec![
+    let documents = [
         (
             "doc1",
             "Rust is a systems programming language focused on safety and performance.",

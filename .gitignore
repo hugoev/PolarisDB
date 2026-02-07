@@ -33,3 +33,16 @@ flamegraph.svg
 coverage/
 lcov.info
 tarpaulin-report.html
+
+# Runtime
+data/
+*.log
+server.log
+
+# Python
+venv/
+__pycache__/
+*.egg-info/
+*.so
+.pytest_cache/
+

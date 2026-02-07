@@ -1,0 +1,12 @@
+[package]
+name = "polarisdb-py"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+name = "_polarisdb"
+crate-type = ["cdylib"]
+
+[dependencies]
+polarisdb-core = { path = "../polarisdb-core" }
+pyo3 = { version = "0.22", features = ["extension-module"] }

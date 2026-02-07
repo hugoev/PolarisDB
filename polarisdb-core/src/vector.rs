@@ -33,7 +33,7 @@ impl Vector {
         }
     }
 
-    /// Creates a vector from an owned Vec<f32>.
+    /// Creates a vector from an owned `Vec<f32>`.
     #[inline]
     pub fn from_vec(data: Vec<f32>) -> Self {
         Self { data }

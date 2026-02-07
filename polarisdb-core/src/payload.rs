@@ -170,12 +170,12 @@ mod tests {
         let p = Payload::new()
             .with_field("str_field", "hello")
             .with_field("int_field", 123)
-            .with_field("float_field", 3.14)
+            .with_field("float_field", std::f64::consts::PI)
             .with_field("bool_field", true);
 
         assert_eq!(p.get_str("str_field"), Some("hello"));
         assert_eq!(p.get_i64("int_field"), Some(123));
-        assert!((p.get_f64("float_field").unwrap() - 3.14).abs() < 1e-10);
+        assert!((p.get_f64("float_field").unwrap() - std::f64::consts::PI).abs() < 1e-10);
         assert_eq!(p.get_bool("bool_field"), Some(true));
     }
 

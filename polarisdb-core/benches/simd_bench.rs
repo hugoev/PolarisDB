@@ -4,7 +4,7 @@ use rand::Rng;
 
 fn bench_distance(c: &mut Criterion) {
     let mut rng = rand::thread_rng();
-    
+
     // Benchmark with typical embedding sizes
     let dimensions = vec![128, 384, 768, 1536]; // e.g., BERT, OpenAI embeddings
 
@@ -17,17 +17,13 @@ fn bench_distance(c: &mut Criterion) {
         group.bench_with_input(
             format!("Dot Product (dim={})", dim),
             &(a.clone(), b.clone()),
-            |b, (v1, v2)| {
-                b.iter(|| dot_product(black_box(v1), black_box(v2)))
-            },
+            |b, (v1, v2)| b.iter(|| dot_product(black_box(v1), black_box(v2))),
         );
 
         group.bench_with_input(
             format!("Euclidean Squared (dim={})", dim),
             &(a.clone(), b.clone()),
-            |b, (v1, v2)| {
-                b.iter(|| euclidean_distance_squared(black_box(v1), black_box(v2)))
-            },
+            |b, (v1, v2)| b.iter(|| euclidean_distance_squared(black_box(v1), black_box(v2))),
         );
 
         group.bench_with_input(

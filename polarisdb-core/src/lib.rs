@@ -43,9 +43,9 @@ pub mod storage;
 pub mod vector;
 
 // Re-exports for convenient access
-pub use collection::{Collection, CollectionConfig};
 #[cfg(feature = "async")]
 pub use collection::AsyncCollection;
+pub use collection::{Collection, CollectionConfig};
 pub use distance::{Distance, DistanceMetric};
 pub use error::{Error, Result};
 pub use filter::{BitmapIndex, Filter, FilterCondition};

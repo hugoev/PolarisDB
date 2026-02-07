@@ -3,6 +3,7 @@ resolver = "2"
 members = [
     "polarisdb-core",
     "polarisdb",
+    "py", "polarisdb-server",
 ]
 
 [workspace.package]

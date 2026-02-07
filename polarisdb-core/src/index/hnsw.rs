@@ -304,9 +304,9 @@ impl HnswIndex {
             let neighbors = self.select_neighbors(&candidates, m);
 
             // Create node if first iteration
-            self.nodes.entry(id).or_insert_with(|| {
-                HnswNode::new(vector.clone(), payload.clone(), new_level)
-            });
+            self.nodes
+                .entry(id)
+                .or_insert_with(|| HnswNode::new(vector.clone(), payload.clone(), new_level));
 
             // Connect new node to neighbors
             self.nodes.get_mut(&id).unwrap().neighbors[layer] = neighbors.clone();

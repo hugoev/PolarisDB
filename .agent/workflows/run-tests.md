@@ -46,6 +46,30 @@ cargo test --lib --workspace
 | Doc | `///` comments with examples | `cargo test --doc` |
 | Integration | `tests/` directory | `cargo test --tests` |
 | Benchmarks | `benches/` directory | `cargo bench` |
+| Python | `py/tests/` | `pytest` (or script) |
+| Server | `verify_server.sh` | `./verify_server.sh` |
+
+## Python & Server Testing
+
+### Python Bindings
+```bash
+# Setup
+cd py && python3 -m venv venv && source venv/bin/activate
+pip install -r requirements.txt
+maturin develop
+
+# Test
+python3 test_bindings.py
+```
+
+### HTTP Server
+```bash
+# Run server
+cargo run -p polarisdb-server
+
+# Run verification (in another terminal)
+./verify_server.sh
+```
 
 ## Writing New Tests
 

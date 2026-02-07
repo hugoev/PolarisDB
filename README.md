@@ -99,6 +99,32 @@ let results = index.search(&query_embedding, 10, Some(filter));
 let collection = AsyncCollection::open_or_create("./data", config).await?;
 collection.insert(id, embedding, payload).await?;
 let results = collection.search(&query, 10, None).await;
+
+
+### 🐍 Python Bindings
+
+```python
+import polarisdb
+
+# Persistent Collection
+col = polarisdb.Collection.open_or_create("./data/my_col", 384, "cosine")
+col.insert(1, [0.1, 0.2, ...])
+results = col.search([0.1, 0.2, ...], 5)
+```
+
+### 🌐 HTTP Server
+
+Run the standalone server:
+
+```bash
+cargo run -p polarisdb-server
+```
+
+Intergate via REST API:
+
+```bash
+curl -X POST http://localhost:8080/collections/my_col/search \
+  -d '{"vector": [0.1, ...], "k": 5}'
 ```
 
 ## Quick Start
@@ -241,24 +267,14 @@ Benchmarked on M1 MacBook Pro with 10,000 128-dimensional vectors:
 ## Architecture
 
 ```
-polarisdb/
+polaridb/
 ├── polarisdb-core/          # Core library (no runtime dependencies)
 │   ├── collection.rs        # Persistent collection API
-│   ├── distance.rs          # SIMD-optimized distance metrics
-│   ├── filter/              # Filter expressions + bitmap index
-│   │   ├── mod.rs           # Filter DSL
-│   │   └── bitmap_index.rs  # Roaring bitmap pre-filtering
-│   ├── index/               # Index implementations
-│   │   ├── brute_force.rs   # Exact nearest neighbor
-│   │   └── hnsw.rs          # Approximate nearest neighbor
-│   ├── payload.rs           # JSON-like metadata
-│   └── storage/             # Persistence layer
-│       ├── wal.rs           # Write-ahead log
-│       └── data_file.rs     # Vector storage
+│   ├── ...
 │
-└── polarisdb/               # Main crate (convenient re-exports)
-    ├── src/lib.rs
-    └── examples/            # Usage examples
+├── polarisdb/               # Main crate (convenient re-exports)
+├── polarisdb-server/        # HTTP API server (axum)
+└── py/                      # Python bindings (pyo3)
 ```
 
 ## Roadmap

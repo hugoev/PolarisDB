@@ -162,7 +162,7 @@
 //! ## Error Handling
 //!
 //! All fallible operations return [`Result<T>`](crate::Result), which uses
-//! the [`Error`](crate::Error) enum for error types.
+//! the [`Error`] enum for error types.
 //!
 //! ## Thread Safety
 //!
