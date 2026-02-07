@@ -99,7 +99,7 @@ let results = index.search(&query_embedding, 10, Some(filter));
 let collection = AsyncCollection::open_or_create("./data", config).await?;
 collection.insert(id, embedding, payload).await?;
 let results = collection.search(&query, 10, None).await;
-
+```
 
 ### 🐍 Python Bindings
 
