@@ -22,20 +22,15 @@ use crate::payload::Payload;
 use crate::vector::VectorId;
 
 /// Sync mode for WAL writes.
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Default)]
 pub enum SyncMode {
     /// Sync after every write (safest, slowest).
     Immediate,
     /// Sync after a batch of writes.
+    #[default]
     Batched,
     /// Don't sync (fastest, risk of data loss on crash).
     NoSync,
-}
-
-impl Default for SyncMode {
-    fn default() -> Self {
-        Self::Batched
-    }
 }
 
 /// The kind of operation in a WAL entry.

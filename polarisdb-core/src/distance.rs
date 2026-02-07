@@ -7,23 +7,18 @@
 use serde::{Deserialize, Serialize};
 
 /// Supported distance metrics for vector similarity.
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Serialize, Deserialize, Default)]
 pub enum DistanceMetric {
     /// Euclidean distance (L2 norm). Lower is more similar.
     Euclidean,
     /// Cosine distance (1 - cosine similarity). Lower is more similar.
+    #[default]
     Cosine,
     /// Dot product (inner product). Higher is more similar.
     /// Note: Results are negated internally so lower = more similar (consistent API).
     DotProduct,
     /// Hamming distance for binary vectors. Lower is more similar.
     Hamming,
-}
-
-impl Default for DistanceMetric {
-    fn default() -> Self {
-        Self::Cosine
-    }
 }
 
 /// A computed distance value with its metric type.
