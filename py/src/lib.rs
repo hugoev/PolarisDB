@@ -1,5 +1,5 @@
-use pyo3::prelude::*;
 use polarisdb_core::{BruteForceIndex, DistanceMetric, Payload};
+use pyo3::prelude::*;
 
 #[pyclass]
 struct Index {
@@ -23,7 +23,8 @@ impl Index {
 
     fn insert(&mut self, id: u64, vector: Vec<f32>) -> PyResult<()> {
         // Simple payload for now
-        self.inner.insert(id, vector, Payload::new())
+        self.inner
+            .insert(id, vector, Payload::new())
             .map_err(|e| pyo3::exceptions::PyValueError::new_err(e.to_string()))
     }
 
@@ -55,7 +56,8 @@ impl Collection {
     }
 
     fn insert(&mut self, id: u64, vector: Vec<f32>) -> PyResult<()> {
-        self.inner.insert(id, vector, Payload::new())
+        self.inner
+            .insert(id, vector, Payload::new())
             .map_err(|e| pyo3::exceptions::PyValueError::new_err(e.to_string()))
     }
 
@@ -65,7 +67,8 @@ impl Collection {
     }
 
     fn flush(&mut self) -> PyResult<()> {
-        self.inner.flush()
+        self.inner
+            .flush()
             .map_err(|e| pyo3::exceptions::PyIOError::new_err(e.to_string()))
     }
 }

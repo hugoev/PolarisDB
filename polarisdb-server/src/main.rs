@@ -5,13 +5,11 @@ use axum::{
     routing::post,
     Json, Router,
 };
-use polarisdb_core::{
-    AsyncCollection, CollectionConfig, DistanceMetric, Payload, VectorId,
-};
+use polarisdb_core::{AsyncCollection, CollectionConfig, DistanceMetric, Payload, VectorId};
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
-use std::sync::{Arc, RwLock};
 use std::net::SocketAddr;
+use std::sync::{Arc, RwLock};
 
 #[derive(Clone)]
 struct AppState {
@@ -58,11 +56,15 @@ async fn create_collection(
 
     let config = CollectionConfig::new(payload.dimension, metric);
     let path = format!("./data/{}", name);
-    
+
     // In a real app, handle error properly
     let collection = AsyncCollection::open_or_create(path, config).await.unwrap();
 
-    state.collections.write().unwrap().insert(name.clone(), collection);
+    state
+        .collections
+        .write()
+        .unwrap()
+        .insert(name.clone(), collection);
 
     (StatusCode::CREATED, format!("Collection {} created", name)).into_response()
 }
@@ -99,7 +101,7 @@ async fn insert_vector(
     };
 
     if let Err(e) = collection.insert(req.id, req.vector, payload).await {
-         return (StatusCode::INTERNAL_SERVER_ERROR, e.to_string()).into_response();
+        return (StatusCode::INTERNAL_SERVER_ERROR, e.to_string()).into_response();
     }
 
     StatusCode::OK.into_response()
@@ -131,11 +133,14 @@ async fn search_vector(
     };
 
     let results = collection.search(&req.vector, req.k, None).await;
-    
-    let response: Vec<SearchResponse> = results.into_iter().map(|r| SearchResponse {
-        id: r.id,
-        distance: r.distance,
-    }).collect();
+
+    let response: Vec<SearchResponse> = results
+        .into_iter()
+        .map(|r| SearchResponse {
+            id: r.id,
+            distance: r.distance,
+        })
+        .collect();
 
     Json(response).into_response()
 }
