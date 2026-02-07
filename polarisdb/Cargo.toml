@@ -10,6 +10,10 @@ keywords.workspace = true
 categories.workspace = true
 readme = "../README.md"
 
+[package.metadata.docs.rs]
+all-features = true
+rustdoc-args = ["--cfg", "docsrs"]
+
 [dependencies]
 polarisdb-core = { path = "../polarisdb-core", version = "0.1.0" }
 serde.workspace = true

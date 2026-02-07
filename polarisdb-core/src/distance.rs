@@ -79,13 +79,51 @@ pub fn euclidean_distance(a: &[f32], b: &[f32]) -> f32 {
 /// Computes squared Euclidean distance (avoids sqrt for comparisons).
 #[inline]
 pub fn euclidean_distance_squared(a: &[f32], b: &[f32]) -> f32 {
-    a.iter()
-        .zip(b.iter())
-        .map(|(x, y)| {
-            let diff = x - y;
-            diff * diff
-        })
-        .sum()
+    let mut sum = 0.0;
+    let mut chunks_a = a.chunks_exact(16);
+    let mut chunks_b = b.chunks_exact(16);
+
+    for (ca, cb) in chunks_a.by_ref().zip(chunks_b.by_ref()) {
+        let d0 = ca[0] - cb[0];
+        let d1 = ca[1] - cb[1];
+        let d2 = ca[2] - cb[2];
+        let d3 = ca[3] - cb[3];
+        let d4 = ca[4] - cb[4];
+        let d5 = ca[5] - cb[5];
+        let d6 = ca[6] - cb[6];
+        let d7 = ca[7] - cb[7];
+        let d8 = ca[8] - cb[8];
+        let d9 = ca[9] - cb[9];
+        let d10 = ca[10] - cb[10];
+        let d11 = ca[11] - cb[11];
+        let d12 = ca[12] - cb[12];
+        let d13 = ca[13] - cb[13];
+        let d14 = ca[14] - cb[14];
+        let d15 = ca[15] - cb[15];
+
+        sum += d0 * d0
+            + d1 * d1
+            + d2 * d2
+            + d3 * d3
+            + d4 * d4
+            + d5 * d5
+            + d6 * d6
+            + d7 * d7
+            + d8 * d8
+            + d9 * d9
+            + d10 * d10
+            + d11 * d11
+            + d12 * d12
+            + d13 * d13
+            + d14 * d14
+            + d15 * d15;
+    }
+
+    for (x, y) in chunks_a.remainder().iter().zip(chunks_b.remainder()) {
+        let diff = x - y;
+        sum += diff * diff;
+    }
+    sum
 }
 
 /// Computes cosine distance between two vectors.
@@ -95,8 +133,8 @@ pub fn euclidean_distance_squared(a: &[f32], b: &[f32]) -> f32 {
 #[inline]
 pub fn cosine_distance(a: &[f32], b: &[f32]) -> f32 {
     let dot = dot_product(a, b);
-    let norm_a = a.iter().map(|x| x * x).sum::<f32>().sqrt();
-    let norm_b = b.iter().map(|x| x * x).sum::<f32>().sqrt();
+    let norm_a = dot_product(a, a).sqrt();
+    let norm_b = dot_product(b, b).sqrt();
 
     let denominator = norm_a * norm_b;
     if denominator == 0.0 {
@@ -111,7 +149,33 @@ pub fn cosine_distance(a: &[f32], b: &[f32]) -> f32 {
 /// Formula: sum(a[i] * b[i])
 #[inline]
 pub fn dot_product(a: &[f32], b: &[f32]) -> f32 {
-    a.iter().zip(b.iter()).map(|(x, y)| x * y).sum()
+    let mut sum = 0.0;
+    let mut chunks_a = a.chunks_exact(16);
+    let mut chunks_b = b.chunks_exact(16);
+
+    for (ca, cb) in chunks_a.by_ref().zip(chunks_b.by_ref()) {
+        sum += ca[0] * cb[0]
+            + ca[1] * cb[1]
+            + ca[2] * cb[2]
+            + ca[3] * cb[3]
+            + ca[4] * cb[4]
+            + ca[5] * cb[5]
+            + ca[6] * cb[6]
+            + ca[7] * cb[7]
+            + ca[8] * cb[8]
+            + ca[9] * cb[9]
+            + ca[10] * cb[10]
+            + ca[11] * cb[11]
+            + ca[12] * cb[12]
+            + ca[13] * cb[13]
+            + ca[14] * cb[14]
+            + ca[15] * cb[15];
+    }
+
+    for (x, y) in chunks_a.remainder().iter().zip(chunks_b.remainder()) {
+        sum += x * y;
+    }
+    sum
 }
 
 /// Computes Hamming distance for binary-like vectors.
