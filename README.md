@@ -115,6 +115,30 @@ col.insert(1, [0.1, 0.2, ...])
 results = col.search([0.1, 0.2, ...], 5)
 ```
 
+### 🦜 LangChain Integration
+
+Use PolarisDB as a vector store in your RAG pipelines:
+
+```python
+from polarisdb.langchain import PolarisDBVectorStore
+from langchain_openai import OpenAIEmbeddings
+
+# Create vector store from documents
+vectorstore = PolarisDBVectorStore.from_texts(
+    texts=["Document 1", "Document 2", "Document 3"],
+    embedding=OpenAIEmbeddings(),
+    collection_path="./my_vectors",
+)
+
+# Similarity search
+docs = vectorstore.similarity_search("query", k=3)
+
+# Use as retriever in RAG chain
+retriever = vectorstore.as_retriever()
+```
+
+See [`examples/langchain_rag.py`](./examples/langchain_rag.py) for a complete RAG example.
+
 ### 🌐 HTTP Server
 
 Run the standalone server:

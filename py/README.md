@@ -84,6 +84,49 @@ Opens an existing collection or creates a new one.
 - **dimension**: Vector dimension.
 - **metric**: Distance metric.
 
+## LangChain Integration
+
+Use PolarisDB as a vector store in LangChain RAG pipelines:
+
+```python
+from polarisdb.langchain import PolarisDBVectorStore
+from langchain_openai import OpenAIEmbeddings
+
+# Create from texts
+vectorstore = PolarisDBVectorStore.from_texts(
+    texts=["Hello world", "Goodbye world"],
+    embedding=OpenAIEmbeddings(),
+    collection_path="./my_vectors",
+)
+
+# Similarity search
+docs = vectorstore.similarity_search("Hello", k=1)
+
+# Use as retriever
+retriever = vectorstore.as_retriever()
+```
+
+**Requirements**: `pip install langchain-core langchain-openai`
+
+## Batch Operations
+
+For efficient bulk operations:
+
+```python
+from polarisdb import Index
+
+index = Index("cosine", 128)
+
+# Insert many vectors at once
+ids = [1, 2, 3, 4, 5]
+vectors = [[0.1] * 128 for _ in range(5)]
+index.insert_batch(ids, vectors)
+
+# Search multiple queries
+queries = [[0.1] * 128, [0.2] * 128]
+results = index.search_batch(queries, k=3)
+```
+
 ## License
 
 MIT
