@@ -1,0 +1,62 @@
+name: Release Rust
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Dry run (do not publish)'
+        required: false
+        default: 'false'
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  publish:
+    name: Publish to crates.io
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Cache cargo
+        uses: Swatinem/rust-cache@v2
+
+      - name: Check formatting
+        run: cargo fmt --all -- --check
+
+      - name: Run clippy
+        run: cargo clippy --workspace --all-features -- -D warnings
+
+      - name: Run tests
+        run: cargo test --workspace --all-features
+
+      - name: Verify package (polarisdb-core)
+        run: cargo publish --dry-run -p polarisdb-core
+
+      - name: Verify package (polarisdb)
+        run: cargo publish --dry-run -p polarisdb
+
+      - name: Publish polarisdb-core to crates.io
+        if: github.event.inputs.dry_run != 'true'
+        run: cargo publish -p polarisdb-core --token ${{ secrets.CRATES_IO_TOKEN }}
+
+      - name: Wait for crates.io index update
+        if: github.event.inputs.dry_run != 'true'
+        run: sleep 30
+
+      - name: Publish polarisdb to crates.io
+        if: github.event.inputs.dry_run != 'true'
+        run: cargo publish -p polarisdb --token ${{ secrets.CRATES_IO_TOKEN }}
+
+      - name: Notify docs.rs
+        if: github.event.inputs.dry_run != 'true'
+        run: |
+          echo "Published to crates.io!"
+          echo "docs.rs will automatically build documentation within ~15 minutes"
+          echo "View at: https://docs.rs/polarisdb"
