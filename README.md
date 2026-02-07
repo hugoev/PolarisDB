@@ -327,13 +327,13 @@ polarisdb/
 | Feature | PolarisDB | LanceDB | Chroma | Qdrant |
 |---------|-----------|---------|--------|--------|
 | Language | Rust | Rust/Python | Python | Rust |
-| Embedded | Yes | Yes | Partial | No |
-| Python Bindings | PyPI | Yes | Native | Yes |
-| HNSW | Yes | Yes | Yes | Yes |
-| Persistence | WAL | Lance | SQLite | Raft |
-| Filtering | Bitmap | Yes | Yes | Yes |
-| Async | Yes | Yes | No | Yes |
-| SIMD | Yes | Yes | No | Yes |
+| Embedded | ✓ | ✓ | Partial | ✗ |
+| Python Bindings | ✓ PyPI | ✓ | ✓ Native | ✓ |
+| HNSW | ✓ | ✓ | ✓ | ✓ |
+| Persistence | ✓ WAL | ✓ Lance | ✓ SQLite | ✓ Raft |
+| Filtering | ✓ Bitmap | ✓ | ✓ | ✓ |
+| Async | ✓ | ✓ | ✗ | ✓ |
+| SIMD | ✓ | ✓ | ✗ | ✓ |
 
 ## Contributing
 
