@@ -21,6 +21,9 @@
   <a href="https://github.com/hugoev/polarisdb/blob/main/LICENSE">
     <img src="https://img.shields.io/badge/license-MIT%2FApache--2.0-blue.svg" alt="License">
   </a>
+  <a href="https://pypi.org/project/polarisdb">
+    <img src="https://img.shields.io/pypi/v/polarisdb.svg" alt="PyPI">
+  </a>
   <a href="https://github.com/hugoev/polarisdb">
     <img src="https://img.shields.io/github/stars/hugoev/polarisdb?style=social" alt="GitHub Stars">
   </a>
@@ -120,7 +123,7 @@ Run the standalone server:
 cargo run -p polarisdb-server
 ```
 
-Intergate via REST API:
+Integrate via REST API:
 
 ```bash
 curl -X POST http://localhost:8080/collections/my_col/search \
@@ -274,14 +277,15 @@ Benchmarked on M1 MacBook Pro with 128-dimensional vectors (Cosine distance):
 ## Architecture
 
 ```
-polaridb/
-├── polarisdb-core/          # Core library (no runtime dependencies)
-│   ├── collection.rs        # Persistent collection API
-│   ├── ...
+polarisdb/
+├── polarisdb-core/          # Core library (distance, indexing, storage)
+│   ├── index/               # BruteForce, HNSW implementations
+│   ├── storage/             # WAL, persistence layer
+│   └── filter/              # Bitmap filtering
 │
 ├── polarisdb/               # Main crate (convenient re-exports)
 ├── polarisdb-server/        # HTTP API server (axum)
-└── py/                      # Python bindings (pyo3)
+└── py/                      # Python bindings (pyo3 + maturin)
 ```
 
 ## Roadmap
@@ -289,10 +293,10 @@ polaridb/
 - [x] **v0.1** — Core functionality, brute-force search, filtering
 - [x] **v0.2** — WAL persistence, crash recovery
 - [x] **v0.3** — HNSW approximate nearest neighbor
-- [x] **v0.4** — Bitmap pre-filtering, async API
-- [ ] **v0.5** — Product quantization, SIMD acceleration
-- [ ] **v0.6** — Multi-vector queries, hybrid search
-- [ ] **v1.0** — Stable API, comprehensive benchmarks
+- [x] **v0.4** — Bitmap pre-filtering, async API, SIMD acceleration
+- [x] **v0.5** — Python bindings, PyPI release
+- [ ] **v0.6** — LangChain integration, multi-vector queries
+- [ ] **v1.0** — Stable API, product quantization, hybrid search
 
 ## Comparison
 
@@ -300,10 +304,12 @@ polaridb/
 |---------|-----------|---------|--------|--------|
 | Language | Rust | Rust/Python | Python | Rust |
 | Embedded | ✅ | ✅ | ⚠️ | ❌ |
+| Python Bindings | ✅ PyPI | ✅ | ✅ Native | ✅ |
 | HNSW | ✅ | ✅ | ✅ | ✅ |
 | Persistence | ✅ WAL | ✅ Lance | ✅ SQLite | ✅ Raft |
 | Filtering | ✅ Bitmap | ✅ | ✅ | ✅ |
 | Async | ✅ | ✅ | ❌ | ✅ |
+| SIMD | ✅ | ✅ | ❌ | ✅ |
 
 ## Contributing
 
