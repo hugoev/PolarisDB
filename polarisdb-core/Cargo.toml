@@ -1,0 +1,33 @@
+[package]
+name = "polarisdb-core"
+description = "Core library for PolarisDB - an embedded vector database for local AI"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+keywords.workspace = true
+categories.workspace = true
+
+[dependencies]
+serde.workspace = true
+serde_json.workspace = true
+thiserror.workspace = true
+memmap2.workspace = true
+crc32fast.workspace = true
+parking_lot.workspace = true
+rand.workspace = true
+roaring.workspace = true
+tokio = { workspace = true, optional = true }
+
+[features]
+default = []
+async = ["tokio"]
+
+[dev-dependencies]
+criterion.workspace = true
+proptest.workspace = true
+rand.workspace = true
+
+[[bench]]
+name = "distance"
+harness = false

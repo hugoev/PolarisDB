@@ -1,0 +1,35 @@
+# Build artifacts
+/target/
+**/target/
+
+# Generated files
+Cargo.lock
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Test directories
+/tmp/
+**/polarisdb_test*/
+
+# Benchmarking
+*.profdata
+*.profraw
+perf.data*
+flamegraph.svg
+
+# Coverage
+*.gcov
+*.gcda
+*.gcno
+coverage/
+lcov.info
+tarpaulin-report.html
