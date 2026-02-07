@@ -3,6 +3,10 @@ use polarisdb_core::{BruteForceIndex, DistanceMetric, Payload};
 use pyo3::prelude::*;
 
 #[pyclass]
+/// In-memory brute-force vector index.
+///
+/// This index stores all vectors in memory and performs exhaustive search
+/// for exact nearest neighbors.
 struct Index {
     inner: BruteForceIndex,
 }
@@ -10,6 +14,11 @@ struct Index {
 #[pymethods]
 impl Index {
     #[new]
+    /// Create a new in-memory index.
+    ///
+    /// Args:
+    ///     metric (str): Distance metric ("cosine", "euclidean", "dot").
+    ///     dimension (int): Dimension of the vectors.
     fn new(metric: &str, dimension: usize) -> PyResult<Self> {
         let metric = match metric {
             "cosine" => DistanceMetric::Cosine,
@@ -22,6 +31,11 @@ impl Index {
         })
     }
 
+    /// Insert a vector into the index.
+    ///
+    /// Args:
+    ///     id (int): Unique identifier for the vector.
+    ///     vector (list[float]): The vector data.
     fn insert(&mut self, id: u64, vector: Vec<f32>) -> PyResult<()> {
         // Simple payload for now
         self.inner
@@ -29,6 +43,14 @@ impl Index {
             .map_err(|e| pyo3::exceptions::PyValueError::new_err(e.to_string()))
     }
 
+    /// Search for nearest neighbors.
+    ///
+    /// Args:
+    ///     query (list[float]): The query vector.
+    ///     k (int): Number of neighbors to return.
+    ///
+    /// Returns:
+    ///     list[tuple[int, float]]: List of (id, distance) tuples.
     fn search(&self, query: Vec<f32>, k: usize) -> PyResult<Vec<(u64, f32)>> {
         let results = self.inner.search(&query, k, None);
         Ok(results.into_iter().map(|r| (r.id, r.distance)).collect())
@@ -36,6 +58,10 @@ impl Index {
 }
 
 #[pyclass]
+/// Persistent vector collection backed by disk storage.
+///
+/// Stores vectors and metadata on disk with WAL (Write-Ahead Log) protection
+/// for durability. Supports crash recovery.
 struct Collection {
     inner: polarisdb_core::Collection,
 }
@@ -43,6 +69,12 @@ struct Collection {
 #[pymethods]
 impl Collection {
     #[staticmethod]
+    /// Open an existing collection or create a new one.
+    ///
+    /// Args:
+    ///     path (str): File system path for the collection.
+    ///     dimension (int): Dimension of the vectors (must match existing).
+    ///     metric (str): Distance metric ("cosine", "euclidean", "dot").
     fn open_or_create(path: &str, dimension: usize, metric: &str) -> PyResult<Self> {
         let metric = match metric {
             "cosine" => DistanceMetric::Cosine,
@@ -56,17 +88,33 @@ impl Collection {
         Ok(Collection { inner: collection })
     }
 
+    /// Insert a vector into the collection.
+    ///
+    /// Args:
+    ///     id (int): Unique identifier.
+    ///     vector (list[float]): Vector data.
     fn insert(&mut self, id: u64, vector: Vec<f32>) -> PyResult<()> {
         self.inner
             .insert(id, vector, Payload::new())
             .map_err(|e| pyo3::exceptions::PyValueError::new_err(e.to_string()))
     }
 
+    /// Search for nearest neighbors.
+    ///
+    /// Args:
+    ///     query (list[float]): Query vector.
+    ///     k (int): Number of results.
+    ///
+    /// Returns:
+    ///     list[tuple[int, float]]: List of (id, distance) tuples.
     fn search(&self, query: Vec<f32>, k: usize) -> PyResult<Vec<(u64, f32)>> {
         let results = self.inner.search(&query, k, None);
         Ok(results.into_iter().map(|r| (r.id, r.distance)).collect())
     }
 
+    /// Flush all pending writes to disk (checkpoint).
+    ///
+    /// This ensures all data is durable and truncates the WAL.
     fn flush(&mut self) -> PyResult<()> {
         self.inner
             .flush()
