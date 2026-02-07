@@ -1,3 +1,4 @@
+#![allow(clippy::useless_conversion)]
 use polarisdb_core::{BruteForceIndex, DistanceMetric, Payload};
 use pyo3::prelude::*;
 
