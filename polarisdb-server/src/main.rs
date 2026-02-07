@@ -57,14 +57,23 @@ async fn create_collection(
     let config = CollectionConfig::new(payload.dimension, metric);
     let path = format!("./data/{}", name);
 
-    // In a real app, handle error properly
-    let collection = AsyncCollection::open_or_create(path, config).await.unwrap();
+    let collection = match AsyncCollection::open_or_create(path, config).await {
+        Ok(c) => c,
+        Err(e) => return (StatusCode::INTERNAL_SERVER_ERROR, e.to_string()).into_response(),
+    };
 
-    state
-        .collections
-        .write()
-        .unwrap()
-        .insert(name.clone(), collection);
+    match state.collections.write() {
+        Ok(mut cols) => {
+            cols.insert(name.clone(), collection);
+        }
+        Err(_) => {
+            return (
+                StatusCode::INTERNAL_SERVER_ERROR,
+                "Failed to acquire lock".to_string(),
+            )
+                .into_response()
+        }
+    }
 
     (StatusCode::CREATED, format!("Collection {} created", name)).into_response()
 }
@@ -81,11 +90,17 @@ async fn insert_vector(
     Path(name): Path<String>,
     Json(req): Json<InsertRequest>,
 ) -> impl IntoResponse {
-    let collection = {
-        let collections = state.collections.read().unwrap();
-        match collections.get(&name) {
+    let collection = match state.collections.read() {
+        Ok(cols) => match cols.get(&name) {
             Some(c) => c.clone(),
             None => return (StatusCode::NOT_FOUND, "Collection not found").into_response(),
+        },
+        Err(_) => {
+            return (
+                StatusCode::INTERNAL_SERVER_ERROR,
+                "Failed to acquire lock".to_string(),
+            )
+                .into_response()
         }
     };
 
@@ -124,11 +139,17 @@ async fn search_vector(
     Path(name): Path<String>,
     Json(req): Json<SearchRequest>,
 ) -> impl IntoResponse {
-    let collection = {
-        let collections = state.collections.read().unwrap();
-        match collections.get(&name) {
+    let collection = match state.collections.read() {
+        Ok(cols) => match cols.get(&name) {
             Some(c) => c.clone(),
             None => return (StatusCode::NOT_FOUND, "Collection not found").into_response(),
+        },
+        Err(_) => {
+            return (
+                StatusCode::INTERNAL_SERVER_ERROR,
+                "Failed to acquire lock".to_string(),
+            )
+                .into_response()
         }
     };
 
