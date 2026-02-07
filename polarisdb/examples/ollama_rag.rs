@@ -104,7 +104,10 @@ fn main() -> Result<()> {
             Err(e) => {
                 println!("[FAIL] Error: {}", e);
                 println!("\n[WARN] Make sure Ollama is running: ollama serve");
-                println!("[WARN] And the model is pulled: ollama pull {}", EMBED_MODEL);
+                println!(
+                    "[WARN] And the model is pulled: ollama pull {}",
+                    EMBED_MODEL
+                );
                 return Ok(());
             }
         }

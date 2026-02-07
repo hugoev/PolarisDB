@@ -64,7 +64,7 @@ impl Index {
     fn insert_batch(&mut self, ids: Vec<u64>, vectors: Vec<Vec<f32>>) -> PyResult<()> {
         if ids.len() != vectors.len() {
             return Err(pyo3::exceptions::PyValueError::new_err(
-                "ids and vectors must have the same length"
+                "ids and vectors must have the same length",
             ));
         }
         for (id, vector) in ids.into_iter().zip(vectors) {
@@ -165,7 +165,7 @@ impl Collection {
     fn insert_batch(&mut self, ids: Vec<u64>, vectors: Vec<Vec<f32>>) -> PyResult<()> {
         if ids.len() != vectors.len() {
             return Err(pyo3::exceptions::PyValueError::new_err(
-                "ids and vectors must have the same length"
+                "ids and vectors must have the same length",
             ));
         }
         for (id, vector) in ids.into_iter().zip(vectors) {
