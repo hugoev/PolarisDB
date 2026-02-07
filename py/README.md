@@ -4,11 +4,11 @@
 
 ## Features
 
-- 🚀 **Fast**: Built on Rust with SIMD optimizations.
-- 💾 **Embedded**: Runs locally without a separate server process.
-- 📦 **Simple**: Easy-to-use Python API for managing collections and indexes.
-- 🔍 **Search**: Supports Euclidean, Cosine, and Dot Product distance metrics.
-- 🛡️ **Durable**: WAL-based persistence for data safety (Collection API).
+- **Fast**: Built on Rust with SIMD optimizations.
+- **Embedded**: Runs locally without a separate server process.
+- **Simple**: Easy-to-use Python API for managing collections and indexes.
+- **Search**: Supports Euclidean, Cosine, and Dot Product distance metrics.
+- **Durable**: WAL-based persistence for data safety (Collection API).
 
 ## Installation
 

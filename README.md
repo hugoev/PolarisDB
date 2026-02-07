@@ -46,29 +46,29 @@ PolarisDB is built for developers who need **fast, local vector search** without
 
 | Feature | PolarisDB | Cloud Solutions |
 |---------|-----------|-----------------|
-| 🏠 **Runs locally** | ✅ | ❌ Requires internet |
-| 🔒 **Data privacy** | ✅ Your machine | ❌ Third-party servers |
-| ⚡ **Zero latency** | ✅ In-process | ❌ Network overhead |
-| 💰 **Cost** | ✅ Free | 💵 Pay per query |
-| 🦀 **Pure Rust** | ✅ No FFI | ⚠️ Often C++ bindings |
+| **Runs locally** | Yes | No (requires internet) |
+| **Data privacy** | Your machine | Third-party servers |
+| **Zero latency** | In-process | Network overhead |
+| **Cost** | Free | Pay per query |
+| **Pure Rust** | No FFI | Often C++ bindings |
 
-**Perfect for:**
-- 🤖 RAG applications with LLMs
-- 🔍 Semantic search engines  
-- 💡 Recommendation systems
-- 📱 Mobile/edge AI applications
-- 🎮 Game AI with embeddings
+**Use cases:**
+- RAG applications with LLMs
+- Semantic search engines
+- Recommendation systems
+- Mobile and edge AI
+- Game AI with embeddings
 
 ## Features
 
-### 🚀 High-Performance Indexing
+### High-Performance Indexing
 
 | Index Type | Use Case | Complexity |
 |------------|----------|------------|
 | **BruteForce** | Small datasets (<10K vectors) | O(n) exact |
 | **HNSW** | Large datasets (millions) | O(log n) approximate |
 
-### 📏 Distance Metrics
+### Distance Metrics
 
 ```rust
 DistanceMetric::Euclidean   // L2 distance
@@ -77,7 +77,7 @@ DistanceMetric::DotProduct  // Maximum inner product
 DistanceMetric::Hamming     // Binary vectors
 ```
 
-### 🎯 Powerful Filtering
+### Metadata Filtering
 
 Combine vector similarity with metadata conditions:
 
@@ -89,13 +89,13 @@ let filter = Filter::field("category").eq("AI")
 let results = index.search(&query_embedding, 10, Some(filter));
 ```
 
-### 💾 Durable Persistence
+### Durable Persistence
 
 - **Write-Ahead Log (WAL)** for crash safety
 - **Automatic recovery** on restart
 - **Memory-mapped files** for efficient disk access
 
-### ⚡ Async-Ready
+### Async Support
 
 ```rust
 // Enable with: polarisdb = { version = "0.1", features = ["async"] }
@@ -104,7 +104,7 @@ collection.insert(id, embedding, payload).await?;
 let results = collection.search(&query, 10, None).await;
 ```
 
-### 🐍 Python Bindings
+### Python Bindings
 
 ```python
 import polarisdb
@@ -115,7 +115,7 @@ col.insert(1, [0.1, 0.2, ...])
 results = col.search([0.1, 0.2, ...], 5)
 ```
 
-### 🦜 LangChain Integration
+### LangChain Integration
 
 Use PolarisDB as a vector store in your RAG pipelines:
 
@@ -139,7 +139,7 @@ retriever = vectorstore.as_retriever()
 
 See [`examples/langchain_rag.py`](./examples/langchain_rag.py) for a complete RAG example.
 
-### 🌐 HTTP Server
+### HTTP Server
 
 Run the standalone server:
 
@@ -327,13 +327,13 @@ polarisdb/
 | Feature | PolarisDB | LanceDB | Chroma | Qdrant |
 |---------|-----------|---------|--------|--------|
 | Language | Rust | Rust/Python | Python | Rust |
-| Embedded | ✅ | ✅ | ⚠️ | ❌ |
-| Python Bindings | ✅ PyPI | ✅ | ✅ Native | ✅ |
-| HNSW | ✅ | ✅ | ✅ | ✅ |
-| Persistence | ✅ WAL | ✅ Lance | ✅ SQLite | ✅ Raft |
-| Filtering | ✅ Bitmap | ✅ | ✅ | ✅ |
-| Async | ✅ | ✅ | ❌ | ✅ |
-| SIMD | ✅ | ✅ | ❌ | ✅ |
+| Embedded | Yes | Yes | Partial | No |
+| Python Bindings | PyPI | Yes | Native | Yes |
+| HNSW | Yes | Yes | Yes | Yes |
+| Persistence | WAL | Lance | SQLite | Raft |
+| Filtering | Bitmap | Yes | Yes | Yes |
+| Async | Yes | Yes | No | Yes |
+| SIMD | Yes | Yes | No | Yes |
 
 ## Contributing
 
@@ -365,10 +365,10 @@ at your option.
 
 - [HNSW Paper](https://arxiv.org/abs/1603.09320) — Hierarchical Navigable Small World graphs
 - [Roaring Bitmaps](https://roaringbitmap.org/) — Compressed bitmap data structure
-- The Rust community 🦀
+- The Rust community
 
 ---
 
 <p align="center">
-  <sub>Built with ❤️ by the PolarisDB contributors</sub>
+  <sub>Built by the PolarisDB contributors</sub>
 </p>

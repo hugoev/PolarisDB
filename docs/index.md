@@ -10,25 +10,25 @@ PolarisDB is a high-performance vector database designed for developers who need
 
 <div class="grid cards" markdown>
 
--   :rocket: **High Performance**
+-   **High Performance**
 
     ---
 
     SIMD-optimized distance calculations, HNSW indexing with O(log n) search.
 
--   :lock: **Local & Private**
+-   **Local and Private**
 
     ---
 
     Runs entirely on your machine. Your data never leaves.
 
--   :snake: **Python & Rust**
+-   **Python and Rust**
 
     ---
 
     Native Rust API with first-class Python bindings on PyPI.
 
--   :zap: **LangChain Ready**
+-   **LangChain Ready**
 
     ---
 
